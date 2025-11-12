@@ -50,26 +50,28 @@ function renderCalendar() {
   board.innerHTML = '';
   const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
-  // Criar colunas para cada dia
-  DAYS.forEach(dayName => {
-    const dayColumn = document.createElement('div');
-    dayColumn.className = 'day-column';
-
-    // Cabeçalho do dia
+  // Cabeçalhos
+  DAYS.forEach(day => {
     const h = document.createElement('h3');
-    h.textContent = dayName;
-    dayColumn.appendChild(h);
+    h.textContent = day;
+    board.appendChild(h);
+  });
 
-    // Cards para este dia (todas as semanas)
-    for (let w = 1; w <= 20; w++) {
+  // Grid: 20 semanas × 7 dias
+  for (let w = 1; w <= 20; w++) {
+    DAYS.forEach((dayName, dayIndex) => {
+      const daySlot = document.createElement('div');
+      daySlot.className = 'day-slot';
+
+      // Busca o treino com a mesma semana e dia
       const workout = PLAN.find(p => p.week === w && p.day === dayName);
       if (workout) {
-        dayColumn.appendChild(createCard(workout));
+        daySlot.appendChild(createCard(workout));
       }
-    }
 
-    board.appendChild(dayColumn);
-  });
+      board.appendChild(daySlot);
+    });
+  }
 }
 
 function createCard(workout) {
@@ -167,11 +169,11 @@ function updateReadiness() {
 
 // Inicializar Sortable.js para drag and drop
 document.addEventListener('DOMContentLoaded', function() {
-    // Colunas de dias
-    const dayColumns = document.querySelectorAll('.day-column');
+    // Slots de dias
+    const daySlots = document.querySelectorAll('.day-slot');
 
-    dayColumns.forEach(column => {
-        new Sortable(column, {
+    daySlots.forEach(slot => {
+        new Sortable(slot, {
             group: 'workouts',
             animation: 150,
             ghostClass: 'sortable-ghost',
