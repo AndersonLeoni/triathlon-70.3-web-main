@@ -10,10 +10,73 @@
   <header>
     <h1>Half-Ironman 70.3 – 20 Semanas</h1>
 
-    <!-- termômetro -->
-    <div id="readiness-display" class="readiness-display regular">
-      <span id="readiness-text">Prontidão: Regular</span>
-      <span id="readiness-percent">0%</span>
+    <!-- métricas de performance -->
+    <div class="performance-metrics">
+      <div class="metric">
+        <span class="metric-label">Fitness</span>
+        <span class="metric-value" id="fitness">0</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Fadiga</span>
+        <span class="metric-value" id="fatigue">0</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Forma</span>
+        <span class="metric-value" id="form">0</span>
+      </div>
+    </div>
+
+    <!-- barra de progresso -->
+    <div class="progress-bar">
+      <div class="progress-section">
+        <span class="progress-label">Duração Total</span>
+        <span class="progress-value" id="total-duration">0h 0min</span>
+      </div>
+      <div class="progress-section">
+        <span class="progress-label">TSS Total</span>
+        <span class="progress-value" id="total-tss">0</span>
+      </div>
+      <div class="progress-section">
+        <span class="progress-label">Duração Executada</span>
+        <span class="progress-value" id="executed-duration">0h 0min</span>
+      </div>
+    </div>
+
+    <!-- estatísticas detalhadas -->
+    <div class="detailed-stats">
+      <div class="stat-group">
+        <h3>Corrida</h3>
+        <div class="stat-item">
+          <span class="stat-label">Distância</span>
+          <span class="stat-value" id="run-distance">0 km</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Elevação</span>
+          <span class="stat-value" id="run-elevation">0 m</span>
+        </div>
+      </div>
+      <div class="stat-group">
+        <h3>Ciclismo</h3>
+        <div class="stat-item">
+          <span class="stat-label">Distância</span>
+          <span class="stat-value" id="bike-distance">0 km</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Trabalho</span>
+          <span class="stat-value" id="bike-work">0 kJ</span>
+        </div>
+      </div>
+      <div class="stat-group">
+        <h3>Natação</h3>
+        <div class="stat-item">
+          <span class="stat-label">Distância</span>
+          <span class="stat-value" id="swim-distance">0 m</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Trabalho</span>
+          <span class="stat-value" id="swim-work">0 kJ</span>
+        </div>
+      </div>
     </div>
   </header>
 

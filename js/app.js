@@ -140,31 +140,81 @@ function createCard(workout) {
 }
 
 function updateReadiness() {
-  const disp = document.querySelector('#readiness-display');
-  if (!disp) {
-    console.warn('⚠️  #readiness-display não encontrado');
-    return;
-  }
-
+  // Calcular métricas de performance (simplificado)
   const done = Object.values(appState).filter(s => s.completed);
   const withRpe = done.filter(s => s.rpe !== null);
 
-  const avg = withRpe.length > 0
-    ? withRpe.reduce((a, b) => a + b.rpe, 0) / withRpe.length
-    : 5;
-
-  const pct = PLAN.length > 0
-    ? Math.round((done.length / PLAN.length) * 100)
+  // Fitness: baseado no RPE médio dos treinos completados
+  const fitness = withRpe.length > 0
+    ? Math.round(withRpe.reduce((a, b) => a + b.rpe, 0) / withRpe.length * 10)
     : 0;
 
-  let label = 'Regular', cls = 'regular';
-  if (avg <= 2) { label = 'Ótima'; cls = 'otima'; }
-  else if (avg <= 4) { label = 'Boa'; cls = 'boa'; }
-  else if (avg <= 6) { label = 'Regular'; cls = 'regular'; }
-  else { label = 'Ruim'; cls = 'ruim'; }
+  // Fadiga: baseado na intensidade recente (últimos 7 dias simulados)
+  const fatigue = Math.round(fitness * 0.8);
 
-  disp.className = 'readiness ' + cls;
-  disp.textContent = 'Prontidão: ' + label + ' ' + pct + '%';
+  // Forma: Fitness - Fadiga
+  const form = Math.max(0, fitness - fatigue);
+
+  // Atualizar métricas
+  document.getElementById('fitness').textContent = fitness;
+  document.getElementById('fatigue').textContent = fatigue;
+  document.getElementById('form').textContent = form;
+
+  // Calcular estatísticas dos treinos
+  let totalRunDistance = 0, totalRunElevation = 0;
+  let totalBikeDistance = 0, totalBikeWork = 0;
+  let totalSwimDistance = 0, totalSwimWork = 0;
+  let totalDuration = 0, totalTss = 0;
+
+  done.forEach(workout => {
+    const title = PLAN.find(p => p.id === workout.id)?.title || '';
+    const rpe = workout.rpe || 5;
+
+    // Estimativas baseadas no título do treino
+    if (title.includes('Run') || title.includes('Corrida')) {
+      if (title.includes('mi')) {
+        const miles = parseFloat(title.match(/(\d+(?:\.\d+)?) mi/)[1]) || 0;
+        totalRunDistance += miles * 1.609; // converter para km
+        totalRunElevation += miles * 50; // estimativa de elevação
+      }
+      totalDuration += 30; // minutos estimados
+      totalTss += rpe * 30; // TSS estimado
+    } else if (title.includes('Cycle') || title.includes('Bike')) {
+      if (title.includes('mi')) {
+        const miles = parseFloat(title.match(/(\d+(?:\.\d+)?) mi/)[1]) || 0;
+        totalBikeDistance += miles * 1.609;
+        totalBikeWork += miles * 100; // kJ estimados
+      }
+      totalDuration += 45;
+      totalTss += rpe * 45;
+    } else if (title.includes('Swim') || title.includes('Natação')) {
+      if (title.includes('m')) {
+        const meters = parseFloat(title.match(/(\d+) m/)[1]) || 0;
+        totalSwimDistance += meters;
+        totalSwimWork += meters * 0.01; // kJ estimados
+      }
+      totalDuration += 25;
+      totalTss += rpe * 25;
+    }
+  });
+
+  // Atualizar estatísticas
+  document.getElementById('run-distance').textContent = totalRunDistance.toFixed(1) + ' km';
+  document.getElementById('run-elevation').textContent = Math.round(totalRunElevation) + ' m';
+  document.getElementById('bike-distance').textContent = totalBikeDistance.toFixed(1) + ' km';
+  document.getElementById('bike-work').textContent = Math.round(totalBikeWork) + ' kJ';
+  document.getElementById('swim-distance').textContent = totalSwimDistance + ' m';
+  document.getElementById('swim-work').textContent = Math.round(totalSwimWork) + ' kJ';
+
+  // Durações totais
+  const totalHours = Math.floor(totalDuration / 60);
+  const totalMins = totalDuration % 60;
+  document.getElementById('total-duration').textContent = totalHours + 'h ' + totalMins + 'min';
+
+  document.getElementById('total-tss').textContent = Math.round(totalTss);
+
+  // Duração executada (mesma que total para treinos completados)
+  document.getElementById('executed-duration').textContent = totalHours + 'h ' + totalMins + 'min';
 }
 
 // Inicializar Sortable.js para drag and drop
