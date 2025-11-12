@@ -1,0 +1,43 @@
+/* Reset mínimo */
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
+body{background:#f4f6fa;color:#222;padding:12px}
+
+/* Cabeçalho */
+header{text-align:center;margin-bottom:18px}
+h1{font-size:1.6rem;margin-bottom:8px}
+
+/* Termômetro */
+.readiness-display{display:inline-flex;gap:12px;padding:6px 18px;border-radius:20px;font-weight:700;color:#fff}
+.readiness-display.ruim{background:#c0392b}
+.readiness-display.regular{background:#e67e22}
+.readiness-display.boa{background:#27ae60}
+.readiness-display.otima{background:#2e86de}
+
+/* Grade do calendário */
+.calendar{overflow-x:auto}
+#board{display:grid;grid-template-columns:repeat(7,minmax(180px,1fr));gap:8px}
+.day-column h3{text-align:center;padding:6px;background:#34495e;color:#fff;border-radius:4px;font-size:.9rem}
+
+/* Card */
+.workout-card{border:1px solid #ccc;border-radius:6px;padding:8px;font-size:.8rem;background:#fff;display:flex;flex-direction:column;gap:6px;min-height:160px}
+.workout-card.completed{background:#e6fbe6;border-color:#27ae60}
+
+/* Ações */
+.actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.btn-done{cursor:pointer;border:none;background:none;font-size:1.1rem}
+.rpe{cursor:pointer;font-size:.8rem;padding:2px 4px;border-radius:3px;background:#eee}
+.rpe.selected{background:#333;color:#fff}
+
+/* Scrollbar estética */
+::-webkit-scrollbar{height:6px;width:6px}::-webkit-scrollbar-thumb{background:#bbb;border-radius:3px}
+
+.note{
+  width:100%;
+  min-height:48px;
+  margin-top:4px;
+  padding:4px 6px;
+  font-size:.75rem;
+  border:1px solid #ccc;
+  border-radius:4px;
+  resize:vertical;
+}
