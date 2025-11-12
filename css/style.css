@@ -16,6 +16,7 @@ h1{font-size:1.6rem;margin-bottom:8px}
 /* Grade do calendário */
 .calendar{overflow-x:auto}
 #board{display:grid;grid-template-columns:repeat(7,minmax(180px,1fr));gap:8px}
+.day-column{display:flex;flex-direction:column;gap:8px}
 .day-column h3{text-align:center;padding:6px;background:#34495e;color:#fff;border-radius:4px;font-size:.9rem}
 
 /* Card */

@@ -50,27 +50,26 @@ function renderCalendar() {
   board.innerHTML = '';
   const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
-  // Cabeçalhos
-  DAYS.forEach(day => {
+  // Criar colunas para cada dia
+  DAYS.forEach(dayName => {
+    const dayColumn = document.createElement('div');
+    dayColumn.className = 'day-column';
+
+    // Cabeçalho do dia
     const h = document.createElement('h3');
-    h.textContent = day;
-    board.appendChild(h);
-  });
+    h.textContent = dayName;
+    dayColumn.appendChild(h);
 
-  // Grid: 20 semanas × 7 dias
-  for (let w = 1; w <= 20; w++) {
-    DAYS.forEach((dayName, dayIndex) => {
-      // Busca o treino com a mesma semana e dia
+    // Cards para este dia (todas as semanas)
+    for (let w = 1; w <= 20; w++) {
       const workout = PLAN.find(p => p.week === w && p.day === dayName);
-
-      if (!workout) {
-        board.appendChild(document.createElement('div'));
-        return;
+      if (workout) {
+        dayColumn.appendChild(createCard(workout));
       }
+    }
 
-      board.appendChild(createCard(workout));
-    });
-  }
+    board.appendChild(dayColumn);
+  });
 }
 
 function createCard(workout) {
@@ -168,45 +167,20 @@ function updateReadiness() {
 
 // Inicializar Sortable.js para drag and drop
 document.addEventListener('DOMContentLoaded', function() {
-    // Lista de treinos
-    const trainingPlan = document.getElementById('board');
+    // Colunas de dias
+    const dayColumns = document.querySelectorAll('.day-column');
 
-    if (trainingPlan) {
-        new Sortable(trainingPlan, {
-            group: 'shared',
+    dayColumns.forEach(column => {
+        new Sortable(column, {
+            group: 'workouts',
             animation: 150,
             ghostClass: 'sortable-ghost',
             chosenClass: 'sortable-chosen',
             dragClass: 'sortable-drag',
             onEnd: function(evt) {
                 // Atualizar estado após drag and drop
-                const cards = trainingPlan.querySelectorAll('.workout-card');
-                cards.forEach((card, index) => {
-                    const id = card.id.replace('card-', '');
-                    // Aqui você pode implementar lógica para reordenar os treinos
-                    console.log('Card moved:', id, 'to position:', index);
-                });
+                console.log('Card moved from', evt.from, 'to', evt.to);
                 saveState();
-            }
-        });
-    }
-
-    // Listas de exercícios por modalidade (se existirem)
-    const exerciseLists = document.querySelectorAll('.exercise-list');
-    exerciseLists.forEach(list => {
-        new Sortable(list, {
-            group: {
-                name: 'shared',
-                pull: 'clone',
-                put: false
-            },
-            animation: 150,
-            sort: false,
-            onEnd: function(evt) {
-                if (evt.to === trainingPlan) {
-                    // Lógica para adicionar novo treino
-                    console.log('New workout added');
-                }
             }
         });
     });
