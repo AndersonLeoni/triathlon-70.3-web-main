@@ -41,3 +41,28 @@ h1{font-size:1.6rem;margin-bottom:8px}
   border-radius:4px;
   resize:vertical;
 }
+
+/* Estados do drag & drop */
+.sortable-ghost {
+    opacity: 0.4;
+    background: #f8f9fa;
+}
+
+.sortable-chosen {
+    background: #e3f2fd;
+    transform: rotate(2deg);
+}
+
+.sortable-drag {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.exercise-item {
+    cursor: grab;
+    transition: all 0.3s ease;
+}
+
+.exercise-item:active {
+    cursor: grabbing;
+}

@@ -165,3 +165,41 @@ function updateReadiness() {
   disp.className = 'readiness ' + cls;
   disp.textContent = 'Prontidão: ' + label + ' ' + pct + '%';
 }
+
+// Inicializar Sortable.js para drag and drop
+document.addEventListener('DOMContentLoaded', function() {
+    // Lista de treinos
+    const trainingPlan = document.getElementById('training-plan');
+    
+    if (trainingPlan) {
+        new Sortable(trainingPlan, {
+            group: 'shared',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
+            onEnd: function(evt) {
+                updateWorkoutSummary();
+            }
+        });
+    }
+
+    // Listas de exercícios por modalidade
+    const exerciseLists = document.querySelectorAll('.exercise-list');
+    exerciseLists.forEach(list => {
+        new Sortable(list, {
+            group: {
+                name: 'shared',
+                pull: 'clone',
+                put: false
+            },
+            animation: 150,
+            sort: false,
+            onEnd: function(evt) {
+                if (evt.to === trainingPlan) {
+                    updateWorkoutSummary();
+                }
+            }
+        });
+    });
+});
