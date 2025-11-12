@@ -169,8 +169,8 @@ function updateReadiness() {
 // Inicializar Sortable.js para drag and drop
 document.addEventListener('DOMContentLoaded', function() {
     // Lista de treinos
-    const trainingPlan = document.getElementById('training-plan');
-    
+    const trainingPlan = document.getElementById('board');
+
     if (trainingPlan) {
         new Sortable(trainingPlan, {
             group: 'shared',
@@ -179,12 +179,19 @@ document.addEventListener('DOMContentLoaded', function() {
             chosenClass: 'sortable-chosen',
             dragClass: 'sortable-drag',
             onEnd: function(evt) {
-                updateWorkoutSummary();
+                // Atualizar estado após drag and drop
+                const cards = trainingPlan.querySelectorAll('.workout-card');
+                cards.forEach((card, index) => {
+                    const id = card.id.replace('card-', '');
+                    // Aqui você pode implementar lógica para reordenar os treinos
+                    console.log('Card moved:', id, 'to position:', index);
+                });
+                saveState();
             }
         });
     }
 
-    // Listas de exercícios por modalidade
+    // Listas de exercícios por modalidade (se existirem)
     const exerciseLists = document.querySelectorAll('.exercise-list');
     exerciseLists.forEach(list => {
         new Sortable(list, {
@@ -197,7 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
             sort: false,
             onEnd: function(evt) {
                 if (evt.to === trainingPlan) {
-                    updateWorkoutSummary();
+                    // Lógica para adicionar novo treino
+                    console.log('New workout added');
                 }
             }
         });
