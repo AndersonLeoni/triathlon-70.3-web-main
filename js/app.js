@@ -48,7 +48,7 @@ function renderCalendar() {
   }
 
   board.innerHTML = '';
-  const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'];
+  const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
   // Cabeçalhos
   DAYS.forEach(day => {
